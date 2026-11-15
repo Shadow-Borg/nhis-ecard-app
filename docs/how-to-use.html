@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NHIS eCard – how to use</title>
+<style>
+  :root { --navy:#0B3D91; --green:#1B7F3B; --red:#B3261E; --ink:#17202B; --grey:#55606E; --bg:#F2F4F8; --gold:#F5B800; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { width:1500px; font-family:"Segoe UI","Nirmala UI",Roboto,Arial,sans-serif; color:var(--ink); background:#fff; }
+  .page { padding:44px 50px 40px; }
+  header { display:flex; align-items:center; gap:22px; border-bottom:5px solid var(--navy); padding-bottom:22px; }
+  .logo { width:92px; height:92px; border-radius:20px; background:var(--navy); position:relative; flex:none; }
+  .logo::before { content:""; position:absolute; left:14px; right:14px; top:26px; bottom:26px; background:#fff; border-radius:5px; }
+  .logo::after { content:""; position:absolute; left:14px; right:14px; top:33px; height:9px; background:var(--gold); }
+  h1 { font-size:46px; line-height:1.1; color:var(--navy); }
+  h1 small { display:block; font-size:30px; font-weight:600; color:var(--ink); margin-top:6px; }
+  .install { margin-top:26px; background:#FFF6D6; border:3px solid var(--gold); border-radius:18px; padding:20px 26px; display:flex; gap:22px; align-items:center; }
+  .install .tag { background:var(--gold); color:#3b2c00; font-weight:800; font-size:24px; padding:12px 18px; border-radius:12px; text-align:center; flex:none; line-height:1.25; }
+  .install p { font-size:25px; line-height:1.4; font-weight:600; }
+  .install p + p { font-weight:500; margin-top:4px; }
+  .install b { color:var(--navy); }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:38px 34px; margin-top:38px; }
+  .step { display:flex; flex-direction:column; align-items:center; }
+  .num { width:66px; height:66px; border-radius:50%; background:var(--navy); color:#fff; font-size:36px; font-weight:800; display:flex; align-items:center; justify-content:center; margin-bottom:-22px; z-index:2; border:5px solid #fff; }
+  .phone { width:330px; height:640px; background:#111; border-radius:38px; padding:12px; box-shadow:0 10px 26px rgba(0,0,0,.22); }
+  .screen { width:100%; height:100%; background:var(--bg); border-radius:28px; overflow:hidden; display:flex; flex-direction:column; }
+  .bar { background:var(--navy); color:#fff; font-weight:700; font-size:16px; line-height:1.3; padding:26px 16px 12px; }
+  .body { padding:14px; display:flex; flex-direction:column; gap:11px; flex:1; }
+  .lbl { font-weight:700; font-size:17px; line-height:1.3; }
+  .lbl.blue { color:var(--navy); font-size:20px; }
+  .input { background:#fff; border:2.5px solid var(--navy); border-radius:12px; text-align:center; font-weight:800; font-size:26px; padding:12px; letter-spacing:1px; }
+  .btn { border-radius:12px; text-align:center; font-weight:700; font-size:16px; line-height:1.3; padding:11px 8px; color:#fff; background:var(--navy); }
+  .btn.green { background:var(--green); } .btn.line { background:#fff; border:2.5px solid currentColor; }
+  .btn.line.red { color:var(--red); } .btn.line.green { color:var(--green); } .btn.line.grey { color:var(--grey); }
+  .btn.hi { outline:5px solid var(--gold); outline-offset:3px; }
+  .input.hi { outline:5px solid var(--gold); outline-offset:3px; }
+  .spinner { width:86px; height:86px; border-radius:50%; border:11px solid #cfd6df; border-top-color:#00897B; margin:46px auto 18px; }
+  .center { text-align:center; }
+  .panel { background:#fff; border:2px solid #C5CCD6; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:7px; }
+  .k { font-size:11.5px; color:var(--grey); } .v { font-size:19px; font-weight:800; margin-top:-5px; }
+  .card { background:#fff; border:2px solid #C5CCD6; border-radius:5px; overflow:hidden; }
+  .card .h { background:#0A2F73; color:#fff; font-size:11px; font-weight:800; padding:8px 8px; text-align:center; }
+  .card .y { background:var(--gold); height:9px; }
+  .card .rows { padding:8px 10px; display:grid; grid-template-columns:1fr 46px; gap:6px; }
+  .card .ln { height:6px; background:#c9d2de; border-radius:3px; margin:4px 0; }
+  .card .ln.s { width:60%; }
+  .qr { width:46px; height:46px; background:repeating-conic-gradient(#222 0 25%, #fff 0 50%) 0 0/9px 9px; }
+  .card .f { background:var(--gold); height:15px; border-top:3px solid #0A2F73; }
+  .saved { color:var(--green); font-weight:700; font-size:14px; line-height:1.35; }
+  .cap { margin-top:16px; text-align:center; max-width:420px; }
+  .cap .en { font-size:25px; font-weight:700; line-height:1.3; }
+  .cap .ta { font-size:22px; line-height:1.45; color:#27313F; margin-top:6px; }
+  footer { margin-top:34px; border-top:3px solid #dfe4ea; padding-top:18px; font-size:20px; color:var(--grey); line-height:1.5; }
+  footer b { color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="logo"></div>
+    <h1>NHIS eCard – How to use
+      <small>மருத்துவக் காப்பீட்டு அட்டை – பயன்படுத்தும் முறை</small></h1>
+  </header>
+
+  <div class="install">
+    <div class="tag">First time<br>முதல் முறை</div>
+    <div>
+      <p><b>Install:</b> download the APK → open the file → allow “Install unknown apps” → tap Install.</p>
+      <p><b>நிறுவ:</b> APK-ஐப் பதிவிறக்கவும் → கோப்பைத் திறக்கவும் → “தெரியாத செயலிகளை நிறுவ” அனுமதிக்கவும் → Install தொடவும்.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- 1 -->
+    <div class="step">
+      <div class="num">1</div>
+      <div class="phone"><div class="screen">
+        <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+        <div class="body">
+          <div class="lbl">Type your PPO number<br>உங்கள் PPO எண்ணை உள்ளிடவும்</div>
+          <div class="input hi">ABC1234</div>
+          <div class="btn hi" style="padding:18px 8px;font-size:18px;margin-top:6px">Get my card<br>அட்டையைப் பெறுக</div>
+        </div>
+      </div></div>
+      <div class="cap">
+        <div class="en">Type your PPO number, then tap “Get my card”.</div>
+        <div class="ta">PPO எண்ணை உள்ளிட்டு, “அட்டையைப் பெறுக” என்பதைத் தொடவும்.</div>
+      </div>
+    </div>
+    <!-- 2 -->
+    <div class="step">
+      <div class="num">2</div>
+      <div class="phone"><div class="screen">
+        <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+        <div class="body">
+          <div class="spinner"></div>
+          <div class="lbl center">Finding your card…<br>Please wait<br>உங்கள் அட்டையைத் தேடுகிறது…<br>காத்திருக்கவும்</div>
+          <div class="btn line grey" style="margin-top:26px">Cancel<br>ரத்து செய்</div>
+        </div>
+      </div></div>
+      <div class="cap">
+        <div class="en">Wait. It can take up to a minute.</div>
+        <div class="ta">காத்திருக்கவும். ஒரு நிமிடம் வரை ஆகலாம்.</div>
+      </div>
+    </div>
+    <!-- 3 -->
+    <div class="step">
+      <div class="num">3</div>
+      <div class="phone"><div class="screen">
+        <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+        <div class="body">
+          <div class="lbl blue">Is this you?<br>இது நீங்களா?</div>
+          <div class="panel">
+            <div class="k">Name / பெயர்</div><div class="v">YOUR NAME</div>
+            <div class="k">PPO / Employee number / PPO எண்</div><div class="v">ABC1234</div>
+            <div class="k">Gender / பாலினம்</div><div class="v">MALE</div>
+            <div class="k">District / மாவட்டம்</div><div class="v">CHENNAI</div>
+          </div>
+          <div class="btn green hi">Yes, this is me<br>ஆம், இது நான்தான்</div>
+          <div class="btn line red">No, go back<br>இல்லை, பின் செல்</div>
+        </div>
+      </div></div>
+      <div class="cap">
+        <div class="en">Check the details. If they are yours, tap “Yes, this is me”.</div>
+        <div class="ta">விவரங்களைச் சரிபார்க்கவும். உங்களுடையது என்றால் “ஆம், இது நான்தான்” தொடவும்.</div>
+      </div>
+    </div>
+    <!-- 4 -->
+    <div class="step">
+      <div class="num">4</div>
+      <div class="phone"><div class="screen">
+        <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+        <div class="body">
+          <div class="card"><div class="h">GOVERNMENT OF TAMILNADU</div><div class="y"></div>
+            <div class="rows"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="qr"></div></div><div class="f"></div></div>
+          <div class="card"><div class="h">This Health Card is for Cashless Treatment</div>
+            <div class="rows" style="grid-template-columns:1fr"><div><div class="ln"></div><div class="ln s" style="margin:4px auto"></div><div class="ln s" style="margin:4px auto"></div></div></div><div class="f"></div></div>
+          <div class="lbl" style="font-size:14px">Save as PDF – choose a size<br>PDF ஆகச் சேமிக்க – அளவைத் தேர்ந்தெடுக்கவும்</div>
+          <div class="btn hi">Card size<br>அட்டை அளவு</div>
+          <div class="btn hi" style="margin-top:6px">Big size<br>பெரிய அளவு</div>
+        </div>
+      </div></div>
+      <div class="cap">
+        <div class="en">Your card appears. Tap “Card size” (to cut and laminate) or “Big size” (full page) to save a PDF.</div>
+        <div class="ta">அட்டை தோன்றும். PDF சேமிக்க “அட்டை அளவு” (வெட்டி லேமினேட் செய்ய) அல்லது “பெரிய அளவு” (முழுப் பக்கம்) தொடவும்.</div>
+      </div>
+    </div>
+    <!-- 5 -->
+    <div class="step">
+      <div class="num">5</div>
+      <div class="phone"><div class="screen">
+        <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+        <div class="body">
+          <div class="btn">Card size<br>அட்டை அளவு</div>
+          <div class="btn">Big size<br>பெரிய அளவு</div>
+          <div class="saved">✔ Saved in Downloads<br>✔ பதிவிறக்கங்களில் சேமிக்கப்பட்டது</div>
+          <div class="btn green">Open<br>திற</div>
+          <div class="btn green">Share on WhatsApp<br>வாட்ஸ்அப்பில் பகிர்</div>
+          <div class="btn green">Print<br>அச்சிடு</div>
+          <div class="btn line grey" style="margin-top:8px">Home<br>முகப்பு</div>
+        </div>
+      </div></div>
+      <div class="cap">
+        <div class="en">The PDF is saved in Downloads. You can open it, share it on WhatsApp, or print it.</div>
+        <div class="ta">PDF பதிவிறக்கங்களில் சேமிக்கப்படும். அதைத் திறக்கலாம், வாட்ஸ்அப்பில் பகிரலாம், அச்சிடலாம்.</div>
+      </div>
+    </div>
+    <!-- 6 -->
+    <div class="step">
+      <div class="num">6</div>
+      <div class="phone"><div class="screen">
+        <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+        <div class="body">
+          <div class="lbl">Type your PPO number<br>உங்கள் PPO எண்ணை உள்ளிடவும்</div>
+          <div class="input" style="color:#888">PPO</div>
+          <div class="btn" style="padding:18px 8px;font-size:18px">Get my card<br>அட்டையைப் பெறுக</div>
+          <div class="btn line green hi" style="margin-top:14px">Show last card<br>கடைசியாகச் சேமித்த அட்டை</div>
+          <div class="k" style="font-size:12.5px">Works without internet<br>இணையம் இல்லாமலும் பார்க்கலாம்</div>
+        </div>
+      </div></div>
+      <div class="cap">
+        <div class="en">Later, “Show last card” shows your card even without internet.</div>
+        <div class="ta">பின்னர், இணையம் இல்லாமலும் “கடைசியாகச் சேமித்த அட்டை” மூலம் அட்டையைப் பார்க்கலாம்.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <b>Needs:</b> Android 10 or newer, and internet to fetch the card. &nbsp;•&nbsp;
+    <b>தேவை:</b> Android 10 அல்லது புதியது; அட்டையைப் பெற இணையம்.<br>
+    Unofficial helper app. The card comes from the Tamil Nadu NHIS website (claims.tn-nhis.net). Sample details shown above.
+  </footer>
+</div>
+</body>
+</html>

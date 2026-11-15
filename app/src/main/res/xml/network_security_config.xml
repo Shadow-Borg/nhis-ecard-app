@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- claims.tn-nhis.net chains to the Sectigo R46 root, which older Android versions
+     do not ship yet. Trust it in addition to the system roots (no user-added CAs). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/sectigo_r46" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
