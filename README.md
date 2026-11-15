@@ -10,6 +10,11 @@ Direct link: `https://github.com/Shadow-Borg/nhis-ecard-app/releases/latest/down
 
 ## How to use
 
+**[▶ Watch the 46-second video](docs/how-to-use.mp4)** – best on a phone. No sound; captions in English and Tamil.
+To send it on WhatsApp, download the file: `https://github.com/Shadow-Borg/nhis-ecard-app/releases/latest/download/NHIS-eCard-how-to-use.mp4`
+
+The same steps as one printable sheet:
+
 ![How to use the NHIS eCard app](docs/how-to-use.png)
 
 ### Install (first time only)
@@ -62,4 +67,4 @@ Plain Java, one activity, no third-party libraries.
 
 The APK is written to `app/build/outputs/apk/release/app-release.apk`. Requires JDK 17 and the Android SDK (platform 34). The release build is signed with the debug key, which is enough for sideloading.
 
-The how-to image is generated from [`docs/how-to-use.html`](docs/how-to-use.html).
+The how-to image is generated from [`docs/how-to-use.html`](docs/how-to-use.html) and the video from [`docs/how-to-use-video.html`](docs/how-to-use-video.html). Both use sample member details.

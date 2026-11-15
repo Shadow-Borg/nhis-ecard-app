@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NHIS eCard – how-to video (source)</title>
+<!--
+  Source of docs/how-to-use.mp4. The page draws one frame for a given time:
+  window.render(seconds). A script steps through time, screenshots each frame
+  at 1080x1920 and encodes them. Open the page in a browser to watch it live.
+  All member details shown are samples.
+-->
+<style>
+  :root { --navy:#0B3D91; --green:#1B7F3B; --red:#B3261E; --ink:#17202B; --grey:#55606E; --bg:#F2F4F8; --gold:#F5B800; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:1080px; height:1920px; overflow:hidden; background:#fff; }
+  body { font-family:"Segoe UI","Nirmala UI",Roboto,Arial,sans-serif; color:var(--ink); }
+  .stage { position:relative; width:1080px; height:1920px; background:linear-gradient(#E9EEF7,#F7F9FC 40%,#fff); overflow:hidden; }
+
+  .top { position:absolute; left:0; right:0; top:0; height:150px; background:var(--navy); color:#fff; display:flex; align-items:center; gap:26px; padding:0 48px; }
+  .badge { width:96px; height:96px; border-radius:50%; background:var(--gold); color:#2b2000; font-size:56px; font-weight:800; display:flex; align-items:center; justify-content:center; flex:none; }
+  .top .t { font-size:44px; font-weight:700; line-height:1.2; }
+  .top .t small { display:block; font-size:32px; font-weight:500; opacity:.92; }
+
+  .phoneWrap { position:absolute; left:50%; top:186px; width:330px; height:640px; transform-origin:top center; transform:translateX(-50%) scale(1.86); }
+  .phone { width:330px; height:640px; background:#111; border-radius:38px; padding:12px; box-shadow:0 10px 26px rgba(0,0,0,.25); }
+  .screen { position:relative; width:100%; height:100%; background:var(--bg); border-radius:28px; overflow:hidden; }
+  .scene { position:absolute; inset:0; display:flex; flex-direction:column; background:var(--bg); opacity:0; }
+  .bar { background:var(--navy); color:#fff; font-weight:700; font-size:16px; line-height:1.3; padding:26px 16px 12px; }
+  .body { padding:14px; display:flex; flex-direction:column; gap:11px; flex:1; }
+  .lbl { font-weight:700; font-size:17px; line-height:1.3; }
+  .lbl.blue { color:var(--navy); font-size:20px; }
+  .input { background:#fff; border:2.5px solid var(--navy); border-radius:12px; text-align:center; font-weight:800; font-size:26px; padding:12px; letter-spacing:1px; min-height:60px; }
+  .input .ph { color:#8a8f98; }
+  .cursor { display:inline-block; width:2.5px; height:28px; background:var(--navy); vertical-align:-4px; margin-left:2px; }
+  .btn { border-radius:12px; text-align:center; font-weight:700; font-size:16px; line-height:1.3; padding:11px 8px; color:#fff; background:var(--navy); }
+  .btn.big { padding:18px 8px; font-size:18px; }
+  .btn.green { background:var(--green); } .btn.line { background:#fff; border:2.5px solid currentColor; }
+  .btn.line.red { color:var(--red); } .btn.line.green { color:var(--green); } .btn.line.grey { color:var(--grey); }
+  .hi { outline:5px solid var(--gold); outline-offset:3px; }
+  .pressed { filter:brightness(.72); transform:scale(.97); }
+  .spinner { width:86px; height:86px; border-radius:50%; border:11px solid #cfd6df; border-top-color:#00897B; margin:46px auto 18px; }
+  .center { text-align:center; }
+  .panel { background:#fff; border:2px solid #C5CCD6; border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:7px; }
+  .k { font-size:11.5px; color:var(--grey); } .v { font-size:19px; font-weight:800; margin-top:-5px; }
+  .card { background:#fff; border:2px solid #C5CCD6; border-radius:5px; overflow:hidden; }
+  .card .h { background:#0A2F73; color:#fff; font-size:11px; font-weight:800; padding:8px; text-align:center; }
+  .card .y { background:var(--gold); height:9px; }
+  .card .rows { padding:8px 10px; display:grid; grid-template-columns:1fr 46px; gap:6px; }
+  .card .ln { height:6px; background:#c9d2de; border-radius:3px; margin:4px 0; }
+  .card .ln.s { width:60%; }
+  .qr { width:46px; height:46px; background:repeating-conic-gradient(#222 0 25%, #fff 0 50%) 0 0/9px 9px; }
+  .card .f { background:var(--gold); height:15px; border-top:3px solid #0A2F73; }
+  .saved { color:var(--green); font-weight:700; font-size:14px; line-height:1.35; }
+  .ripple { position:absolute; width:70px; height:70px; margin:-35px 0 0 -35px; border-radius:50%; background:rgba(245,184,0,.75); border:3px solid #fff; opacity:0; pointer-events:none; z-index:50; }
+
+  .cap { position:absolute; left:50px; right:50px; top:1420px; height:420px; text-align:center; opacity:0; display:flex; flex-direction:column; justify-content:center; }
+  .cap .en { font-size:56px; font-weight:800; line-height:1.22; color:var(--navy); }
+  .cap .ta { font-size:44px; font-weight:600; line-height:1.4; margin-top:18px; }
+  .progress { position:absolute; left:0; bottom:0; height:14px; background:var(--gold); width:0; }
+  .track { position:absolute; left:0; right:0; bottom:0; height:14px; background:#dfe4ea; }
+
+  .cover { position:absolute; inset:0; background:var(--navy); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:70px; opacity:0; z-index:100; }
+  .cover .logo { width:230px; height:230px; border-radius:50px; background:#fff; position:relative; margin-bottom:60px; }
+  .cover .logo::before { content:""; position:absolute; left:36px; right:36px; top:64px; bottom:64px; background:var(--navy); border-radius:12px; }
+  .cover .logo::after { content:""; position:absolute; left:36px; right:36px; top:84px; height:22px; background:var(--gold); }
+  .cover h1 { font-size:104px; line-height:1.1; }
+  .cover h2 { font-size:58px; font-weight:600; line-height:1.3; margin-top:34px; }
+  .cover h3 { font-size:50px; font-weight:500; line-height:1.45; margin-top:22px; opacity:.95; }
+  .cover .url { margin-top:60px; background:#fff; color:var(--navy); font-size:42px; font-weight:800; padding:26px 34px; border-radius:22px; line-height:1.3; word-break:break-word; }
+  .cover .note { margin-top:44px; font-size:34px; opacity:.85; line-height:1.4; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="top">
+    <div class="badge" id="badge">1</div>
+    <div class="t">NHIS eCard – How to use<small>பயன்படுத்தும் முறை</small></div>
+  </div>
+
+  <div class="phoneWrap"><div class="phone"><div class="screen" id="screen">
+
+    <div class="scene" id="s1">
+      <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+      <div class="body">
+        <div class="lbl">Type your PPO number<br>உங்கள் PPO எண்ணை உள்ளிடவும்</div>
+        <div class="input" id="s1input"></div>
+        <div class="btn big" id="s1go" style="margin-top:6px">Get my card<br>அட்டையைப் பெறுக</div>
+      </div>
+    </div>
+
+    <div class="scene" id="s2">
+      <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+      <div class="body">
+        <div class="spinner" id="spin"></div>
+        <div class="lbl center">Finding your card…<br>Please wait<br>உங்கள் அட்டையைத் தேடுகிறது…<br>காத்திருக்கவும்</div>
+        <div class="btn line grey" style="margin-top:26px">Cancel<br>ரத்து செய்</div>
+      </div>
+    </div>
+
+    <div class="scene" id="s3">
+      <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+      <div class="body">
+        <div class="lbl blue">Is this you?<br>இது நீங்களா?</div>
+        <div class="panel">
+          <div class="k">Name / பெயர்</div><div class="v">YOUR NAME</div>
+          <div class="k">PPO / Employee number / PPO எண்</div><div class="v">ABC1234</div>
+          <div class="k">Gender / பாலினம்</div><div class="v">MALE</div>
+          <div class="k">District / மாவட்டம்</div><div class="v">CHENNAI</div>
+        </div>
+        <div class="btn green" id="s3yes">Yes, this is me<br>ஆம், இது நான்தான்</div>
+        <div class="btn line red">No, go back<br>இல்லை, பின் செல்</div>
+      </div>
+    </div>
+
+    <div class="scene" id="s4">
+      <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+      <div class="body">
+        <div class="card"><div class="h">GOVERNMENT OF TAMILNADU</div><div class="y"></div>
+          <div class="rows"><div><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div><div class="qr"></div></div><div class="f"></div></div>
+        <div class="card"><div class="h">This Health Card is for Cashless Treatment</div>
+          <div class="rows" style="grid-template-columns:1fr"><div><div class="ln"></div><div class="ln s" style="margin:4px auto"></div><div class="ln s" style="margin:4px auto"></div></div></div><div class="f"></div></div>
+        <div class="lbl" style="font-size:14px">Save as PDF – choose a size<br>PDF ஆகச் சேமிக்க – அளவைத் தேர்ந்தெடுக்கவும்</div>
+        <div class="btn" id="s4card">Card size<br>அட்டை அளவு</div>
+        <div class="btn" id="s4big" style="margin-top:6px">Big size<br>பெரிய அளவு</div>
+      </div>
+    </div>
+
+    <div class="scene" id="s5">
+      <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+      <div class="body">
+        <div class="btn">Card size<br>அட்டை அளவு</div>
+        <div class="btn">Big size<br>பெரிய அளவு</div>
+        <div class="saved">✔ Saved in Downloads<br>✔ பதிவிறக்கங்களில் சேமிக்கப்பட்டது</div>
+        <div class="btn green" id="s5open">Open<br>திற</div>
+        <div class="btn green" id="s5wa">Share on WhatsApp<br>வாட்ஸ்அப்பில் பகிர்</div>
+        <div class="btn green" id="s5print">Print<br>அச்சிடு</div>
+        <div class="btn line grey" style="margin-top:8px">Home<br>முகப்பு</div>
+      </div>
+    </div>
+
+    <div class="scene" id="s6">
+      <div class="bar">Health Insurance Card<br>மருத்துவக் காப்பீட்டு அட்டை</div>
+      <div class="body">
+        <div class="lbl">Type your PPO number<br>உங்கள் PPO எண்ணை உள்ளிடவும்</div>
+        <div class="input"><span class="ph">PPO</span></div>
+        <div class="btn big">Get my card<br>அட்டையைப் பெறுக</div>
+        <div class="btn line green" id="s6last" style="margin-top:14px">Show last card<br>கடைசியாகச் சேமித்த அட்டை</div>
+        <div class="k" style="font-size:12.5px">Works without internet<br>இணையம் இல்லாமலும் பார்க்கலாம்</div>
+      </div>
+    </div>
+
+    <div class="ripple" id="ripple"></div>
+  </div></div></div>
+
+  <div class="cap" id="c1"><div class="en">Type your PPO number, then tap “Get my card”</div><div class="ta">PPO எண்ணை உள்ளிட்டு, “அட்டையைப் பெறுக” தொடவும்</div></div>
+  <div class="cap" id="c2"><div class="en">Wait. It can take up to a minute</div><div class="ta">காத்திருக்கவும். ஒரு நிமிடம் வரை ஆகலாம்</div></div>
+  <div class="cap" id="c3"><div class="en">Check the details. If they are yours, tap “Yes, this is me”</div><div class="ta">விவரங்களைச் சரிபார்த்து, உங்களுடையது என்றால் “ஆம்” தொடவும்</div></div>
+  <div class="cap" id="c4"><div class="en">Your card appears. Tap “Card size” or “Big size” to save a PDF</div><div class="ta">அட்டை தோன்றும். PDF சேமிக்க “அட்டை அளவு” அல்லது “பெரிய அளவு” தொடவும்</div></div>
+  <div class="cap" id="c5"><div class="en">Saved in Downloads. Open it, share on WhatsApp, or print</div><div class="ta">பதிவிறக்கங்களில் சேமிக்கப்படும். திறக்கலாம், பகிரலாம், அச்சிடலாம்</div></div>
+  <div class="cap" id="c6"><div class="en">Later, “Show last card” works even without internet</div><div class="ta">பின்னர், இணையம் இல்லாமலும் “கடைசியாகச் சேமித்த அட்டை” பார்க்கலாம்</div></div>
+
+  <div class="track"></div><div class="progress" id="progress"></div>
+
+  <div class="cover" id="intro">
+    <div class="logo"></div>
+    <h1>NHIS eCard</h1>
+    <h2>How to get your health card</h2>
+    <h3>உங்கள் மருத்துவக் காப்பீட்டு<br>அட்டையைப் பெறுவது எப்படி</h3>
+  </div>
+  <div class="cover" id="outro">
+    <h2>Download the app</h2>
+    <h3>செயலியைப் பதிவிறக்கவும்</h3>
+    <div class="url">github.com/Shadow-Borg/<br>nhis-ecard-app</div>
+    <div class="note">Android 10 or newer • Unofficial helper app<br>Sample details shown in this video</div>
+  </div>
+</div>
+
+<script>
+  // Timeline in seconds. Each scene: [start, end].
+  var S = { intro:[0,3], s1:[3,10.2], s2:[10.2,14.2], s3:[14.2,21.6], s4:[21.6,29.2], s5:[29.2,36.8], s6:[36.8,42], outro:[42,46] };
+  var DURATION = 46, FADE = 0.4, TYPED = "ABC1234";
+  var $ = function (id) { return document.getElementById(id); };
+  function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function between(t, a, b) { return t >= a && t < b; }
+  function set(el, cls, on) { el.classList.toggle(cls, !!on); }
+
+  function tap(t, at, el) {            // ripple on an element at time `at`
+    var p = (t - at) / 0.65;
+    if (p < 0 || p > 1) return false;
+    var r = el.getBoundingClientRect(), s = $("screen").getBoundingClientRect(), k = s.width / $("screen").offsetWidth;
+    var rp = $("ripple");
+    rp.style.left = ((r.left + r.width / 2 - s.left) / k) + "px";
+    rp.style.top = ((r.top + r.height / 2 - s.top) / k) + "px";
+    rp.style.opacity = String(0.9 * (1 - p));
+    rp.style.transform = "scale(" + (0.4 + 1.5 * p) + ")";
+    return true;
+  }
+
+  window.DURATION = DURATION;
+  window.render = function (t) {
+    var names = ["s1", "s2", "s3", "s4", "s5", "s6"], step = 1;
+    names.forEach(function (n, i) {
+      var a = S[n][0], b = S[n][1];
+      var o = t < a ? 0 : t > b + FADE ? 0 : clamp((t - a) / FADE);
+      if (i === 0 && t < a) o = 1;                       // first screen sits under the intro
+      $(n).style.opacity = String(o);
+      $(n).style.zIndex = String(i + 1);
+      var c = $("c" + (i + 1));
+      c.style.opacity = String(t < a ? 0 : t >= b ? clamp(1 - (t - b) / FADE) : clamp((t - a) / FADE));
+      if (t >= a) step = i + 1;
+    });
+    $("badge").textContent = String(step);
+
+    $("intro").style.opacity = String(t < 2.5 ? 1 : clamp(1 - (t - 2.5) / 0.5));
+    $("outro").style.opacity = String(clamp((t - S.outro[0]) / 0.5));
+    $("progress").style.width = (clamp((t - 3) / (S.outro[0] - 3)) * 1080) + "px";
+
+    // 1: typing, then tap "Get my card"
+    var n = Math.max(0, Math.min(TYPED.length, Math.floor((t - 4.2) / 0.42)));
+    var typing = between(t, 3.6, 7.6), blink = Math.floor(t * 2.2) % 2 === 0;
+    $("s1input").innerHTML = (n ? TYPED.slice(0, n) : (typing ? "" : '<span class="ph">PPO</span>'))
+        + (typing && blink ? '<span class="cursor"></span>' : "");
+    set($("s1input"), "hi", typing);
+    set($("s1go"), "hi", between(t, 7.6, 10.2));
+    set($("s1go"), "pressed", between(t, 9.2, 9.6));
+
+    // 2: spinner
+    $("spin").style.transform = "rotate(" + (t * 330) + "deg)";
+
+    // 3: tap "Yes"
+    set($("s3yes"), "hi", between(t, 17.6, 21.6));
+    set($("s3yes"), "pressed", between(t, 20.5, 20.9));
+
+    // 4: two sizes, tap "Card size"
+    set($("s4card"), "hi", between(t, 24.4, 29.2));
+    set($("s4big"), "hi", between(t, 24.4, 27.6));
+    set($("s4card"), "pressed", between(t, 28.1, 28.5));
+
+    // 5: Open / WhatsApp / Print in turn
+    set($("s5open"), "hi", between(t, 31.2, 32.9));
+    set($("s5wa"), "hi", between(t, 32.9, 34.6));
+    set($("s5print"), "hi", between(t, 34.6, 36.4));
+
+    // 6: Show last card
+    set($("s6last"), "hi", between(t, 38.4, 42));
+
+    $("ripple").style.opacity = "0";
+    tap(t, 9.2, $("s1go")) || tap(t, 20.5, $("s3yes")) || tap(t, 28.1, $("s4card")) || tap(t, 40.2, $("s6last"));
+  };
+
+  // Live preview when opened by a person (the encoder calls render() itself).
+  if (!/[?&]still/.test(location.search)) {
+    var t0 = performance.now();
+    (function loop() { window.render(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); })();
+  } else { window.render(0); }
+</script>
+</body>
+</html>
